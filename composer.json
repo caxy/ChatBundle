@@ -18,7 +18,7 @@
     "require": {
         "symfony/symfony": "2.1.*",
         "doctrine/orm": ">=2.2.0",
-        "knplabs/knp-time-bundle": "1.1.*"
+        "knplabs/knp-time-bundle": "1.0.*"
     },
     "extra": {
         "branch-alias": {
