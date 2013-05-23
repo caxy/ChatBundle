@@ -39,7 +39,7 @@ class ChatController extends Controller
     {
         $message = new Message();
         $message->setAuthor($this->getUser());
-        $message->setChannel('default');
+        $message->setChannel($this->_getChannelName());
         $message->setMessage($request->get('message'));
         $message->setInsertDate(new \DateTime());
         $this->getDoctrine()->getManager()->persist($message);
@@ -55,7 +55,7 @@ class ChatController extends Controller
     public function listAction()
     {
         $messages = $this->getDoctrine()->getRepository('CunningsoftChatBundle:Message')->findBy(
-            array('channel' => 'default'),
+            array('channel' => $this->_getChannelName()),
             array('id' => 'desc'),
             $this->container->getParameter('cunningsoft_chat.number_of_messages')
         );
@@ -64,4 +64,12 @@ class ChatController extends Controller
             'messages' => $messages,
         );
     }
+
+    /**
+     * This function allows derived classes to dynamically set the channel
+     */
+    protected function _getChannelName()
+    {
+        return 'default';
+    {
 }
