@@ -71,5 +71,5 @@ class ChatController extends Controller
     protected function _getChannelName()
     {
         return 'default';
-    {
+    }
 }
