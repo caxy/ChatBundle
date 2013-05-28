@@ -18,13 +18,14 @@ class ChatController extends Controller
     /**
      * @return Response
      *
-     * @Route("", name="cunningsoft_chat_show")
+     * @Route("/{channel}", name="cunningsoft_chat_show")
      * @Template
      */
-    public function showAction()
+    public function showAction($channel = 'default')
     {
         return array(
             'updateInterval' => $this->container->getParameter('cunningsoft_chat.update_interval'),
+            'channel' => $channel
         );
     }
 
@@ -33,13 +34,13 @@ class ChatController extends Controller
      *
      * @return RedirectResponse
      *
-     * @Route("/post", name="cunningsoft_chat_post")
+     * @Route("/post/{channel}", name="cunningsoft_chat_post")
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request, $channel = 'channel')
     {
         $message = new Message();
         $message->setAuthor($this->getUser());
-        $message->setChannel($this->_getChannelName());
+        $message->setChannel($channel);
         $message->setMessage($request->get('message'));
         $message->setInsertDate(new \DateTime());
         $this->getDoctrine()->getManager()->persist($message);
@@ -49,13 +50,13 @@ class ChatController extends Controller
     }
 
     /**
-     * @Route("/list", name="cunningsoft_chat_list")
+     * @Route("/list/{channel}", name="cunningsoft_chat_list")
      * @Template
      */
-    public function listAction()
+    public function listAction(Request $request, $channel = 'default')
     {
         $messages = $this->getDoctrine()->getRepository('CunningsoftChatBundle:Message')->findBy(
-            array('channel' => $this->_getChannelName()),
+            array('channel' => $channel),
             array('id' => 'desc'),
             $this->container->getParameter('cunningsoft_chat.number_of_messages')
         );
@@ -63,13 +64,5 @@ class ChatController extends Controller
         return array(
             'messages' => $messages,
         );
-    }
-
-    /**
-     * This function allows derived classes to dynamically set the channel
-     */
-    protected function _getChannelName()
-    {
-        return 'default';
     }
 }
