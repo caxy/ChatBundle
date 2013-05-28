@@ -18,10 +18,10 @@ class ChatController extends Controller
     /**
      * @return Response
      *
-     * @Route("/{channel}", name="cunningsoft_chat_show", defaults={"channel" = "default"})
+     * @Route("/{channel}", name="cunningsoft_chat_show")
      * @Template
      */
-    public function showAction($channel)
+    public function showAction($channel = 'default')
     {
         return array(
             'updateInterval' => $this->container->getParameter('cunningsoft_chat.update_interval'),
@@ -34,9 +34,9 @@ class ChatController extends Controller
      *
      * @return RedirectResponse
      *
-     * @Route("/post/{channel}", name="cunningsoft_chat_post", defaults={"channel" = "default"})
+     * @Route("/post/{channel}", name="cunningsoft_chat_post")
      */
-    public function postAction(Request $request, $channel)
+    public function postAction(Request $request, $channel = 'channel')
     {
         $message = new Message();
         $message->setAuthor($this->getUser());
@@ -50,10 +50,10 @@ class ChatController extends Controller
     }
 
     /**
-     * @Route("/list/{channel}", name="cunningsoft_chat_list", defaults={"channel" = "default"})
+     * @Route("/list/{channel}", name="cunningsoft_chat_list")
      * @Template
      */
-    public function listAction(Request $request, $channel)
+    public function listAction(Request $request, $channel = 'default')
     {
         $messages = $this->getDoctrine()->getRepository('CunningsoftChatBundle:Message')->findBy(
             array('channel' => $channel),
