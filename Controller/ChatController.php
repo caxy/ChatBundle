@@ -53,7 +53,7 @@ class ChatController extends Controller
      * @Route("/list/{channel}", name="cunningsoft_chat_list")
      * @Template
      */
-    public function listAction(Request $request, $channel = 'default')
+    public function listAction($channel = 'default')
     {
         $messages = $this->getDoctrine()->getRepository('CunningsoftChatBundle:Message')->findBy(
             array('channel' => $channel),
